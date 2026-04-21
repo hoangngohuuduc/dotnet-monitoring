@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: dotnet-app-deployment
 spec:
-  replicas: 1 # Set the desired number of replicas
+  replicas: 1
   selector:
     matchLabels:
       app: dotnet-app
@@ -14,9 +14,10 @@ spec:
     spec:
       containers:
         - name: dotnet-app
-          image: duchoang26/dotnet-monitoring:latest # Replace with your Docker image name
+          image: duchoang26/dotnet-monitoring:latest
           ports:
-            - containerPort: 5000 # Expose the port specified in your Dockerfile
+            - containerPort: 5000
+          imagePullPolicy: Always   # đảm bảo pull image mới từ CI/CD
 
 ---
 apiVersion: v1
@@ -24,10 +25,11 @@ kind: Service
 metadata:
   name: dotnet-app-service
 spec:
+  type: NodePort
   selector:
     app: dotnet-app
   ports:
     - protocol: TCP
-      port: 80 # Service port
-      targetPort: 5000 # Port in the container
-  type: NodePort # Use NodePort service type            
+      port: 80
+      targetPort: 5000
+      nodePort: 31537   # 🔥 FIX: thêm dòng này để cố định port
