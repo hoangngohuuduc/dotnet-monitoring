@@ -17,7 +17,10 @@ spec:
           image: duchoang26/dotnet-monitoring:latest
           ports:
             - containerPort: 5000
-          imagePullPolicy: Always   # đảm bảo pull image mới từ CI/CD
+          env:
+            - name: ASPNETCORE_URLS
+              value: "http://0.0.0.0:5000"   
+          imagePullPolicy: Always
 
 ---
 apiVersion: v1
@@ -29,6 +32,6 @@ spec:
     app: dotnet-app
   ports:
     - protocol: TCP
-      port: 80 # Service port
-      targetPort: 5000 # Port in the container
-  type: NodePort # Use NodePort service type         
+      port: 80
+      targetPort: 5000
+  type: NodePort
