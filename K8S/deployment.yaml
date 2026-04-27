@@ -25,11 +25,10 @@ kind: Service
 metadata:
   name: dotnet-app-service
 spec:
-  type: NodePort
   selector:
     app: dotnet-app
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 5000
-      nodePort: 31537   # 🔥 FIX: thêm dòng này để cố định port
+      port: 80 # Service port
+      targetPort: 5000 # Port in the container
+  type: NodePort # Use NodePort service type         
